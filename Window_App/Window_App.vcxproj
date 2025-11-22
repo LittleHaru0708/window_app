@@ -131,11 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Directx12.cpp" />
+    <ClCompile Include="DX12App.cpp" />
     <ClCompile Include="DXGI.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DX12App.h" />
     <ClInclude Include="DXGI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
