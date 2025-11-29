@@ -323,7 +323,7 @@ void DX12App::Render()
         m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
     rtv.ptr += backIndex * m_rtvDescriptorSize;
 
-    const float clearColor[] = { 1.0f, 0.0f, 0.0f, 1.0f };//‚±‚±‚Ì”’l‚ğ‚¢‚¶‚ê‚ÎF‚ª•Ï‚¦‚ç‚ê‚é”wŒi‚Ì‚P‚ªÅ‘å
+    const float clearColor[] = { 0.2f, 0.2f, 0.2f, 1.0f };//‚±‚±‚Ì”’l‚ğ‚¢‚¶‚ê‚ÎF‚ª•Ï‚¦‚ç‚ê‚é”wŒi‚Ì‚P‚ªÅ‘å
     m_commandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
 
     // šViewport / Scissor C³”ÅiŠ®‘S‘ã“ü•û®j

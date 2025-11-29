@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\ktc\Desktop\window_app\Window_App\include\directx</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\harut\OneDrive\ドキュメント\GitHub\window_app\Window_App\include\directx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
