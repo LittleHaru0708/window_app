@@ -1,74 +1,92 @@
 #include <Windows.h>
+#include "DX12App.h"
 
-const char CLASS_NAME[] = "MyWindowClass";
+DX12App* g_app = nullptr;
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    switch (uMsg)
+    switch (msg)
     {
     case WM_DESTROY:
-        PostQuitMessage(0); 
+        PostQuitMessage(0);
+        return 0;
+
+    case WM_SIZE:
+        // ウィンドウサイズ変更時に何かするならここ
         return 0;
 
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hwnd, &ps);
-        TextOut(hdc, 10, 10, "Hello, Win32 API!", 18);
         EndPaint(hwnd, &ps);
+        return 0;
     }
-    return 0;
-
     }
 
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    return DefWindowProc(hwnd, msg, wParam, lParam);
 }
-int WINAPI WinMain(
-    HINSTANCE hInstance,      // アプリケーションの識別番号
-    HINSTANCE hPrevInstance,  // 基本使わなくていい
-    LPSTR lpCmdLine,          // コマンドライン引数（起動時のオプション）
-    int nCmdShow              // ウィンドウの表示方法（最大化、最小化など）
-)
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-    WNDCLASS wc = {};
+    const char CLASS_NAME[] = "DX12WindowClass";
+
+    WNDCLASS wc{};
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
     wc.lpszClassName = CLASS_NAME;
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
+    if (!RegisterClass(&wc))
+        return -1;
 
-    RegisterClass(&wc);
-    
     HWND hwnd = CreateWindowEx(
-        0,                              
-        CLASS_NAME,                     
-        "My First Win32 Window",        
+        0,
+        CLASS_NAME,
+        "DirectX12 Triangle Demo",
         WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 500, 300,
-
-        nullptr,       
-        nullptr,       
-        hInstance,     
+        CW_USEDEFAULT, CW_USEDEFAULT,
+        1280, 720,
+        nullptr,
+        nullptr,
+        hInstance,
         nullptr
-
-        
     );
 
-    if (hwnd == nullptr)
-    {
-        return 0;
-    }
+    if (!hwnd) return -1;
 
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
-    MSG msg = {};
-    while (GetMessage(&msg, nullptr, 0, 0))
+    // DX12 初期化
+    g_app = new DX12App(hwnd, 1280, 720);
+    if (!g_app->Initialize())
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        MessageBoxA(hwnd, "DirectX12 initialization failed.", "Error", MB_OK | MB_ICONERROR);
+        delete g_app;
+        g_app = nullptr;
+        return -1;
     }
 
-    return (int)msg.wParam;
+    // メインループ
+    MSG msg{};
+    while (true)
+    {
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        {
+            if (msg.message == WM_QUIT) break;
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        else
+        {
+            // 描画
+            g_app->Render();
+        }
+    }
+
+    delete g_app;
+    g_app = nullptr;
+
+    return static_cast<int>(msg.wParam);
 }

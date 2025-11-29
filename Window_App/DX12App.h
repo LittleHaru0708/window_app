@@ -1,4 +1,5 @@
 #pragma once
+
 #include <windows.h>
 #include <wrl.h>
 #include <d3d12.h>
@@ -19,6 +20,7 @@ public:
     void WaitForGPU();
 
 private:
+    // 初期化サブ処理
     bool CreateFactory();
     bool SelectAdapter();
     bool CreateDevice();
@@ -30,11 +32,11 @@ private:
     bool CreateCommandList();
     bool CreateFence();
 
-    // 三角形描画専用追加
-    bool CreateTriangleResources();      // 頂点/インデックス/ビュー
-    bool CompileShaders();               // HLSL → バイトコード
-    bool CreateRootSignature();          // ルートシグネチャ
-    bool CreatePipelineState();          // PSO 作成
+    // 三角形描画用
+    bool CompileShaders();
+    bool CreateRootSignature();
+    bool CreatePipelineState();
+    bool CreateTriangleResources();
 
 private:
     HWND m_hWnd{};
@@ -48,18 +50,18 @@ private:
     ComPtr<IDXGISwapChain3> m_swapChain;
 
     ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
-    UINT m_rtvDescriptorSize;
+    UINT m_rtvDescriptorSize{ 0 };
     ComPtr<ID3D12Resource> m_renderTargets[2];
 
     ComPtr<ID3D12CommandAllocator> m_commandAllocators[2];
     ComPtr<ID3D12GraphicsCommandList> m_commandList;
 
     ComPtr<ID3D12Fence> m_fence;
-    UINT64 m_fenceValues[2]{ 0,0 };
+    UINT64 m_fenceValues[2]{ 0, 0 };
     UINT64 m_fenceValue = 0;
-    HANDLE m_fenceEvent;
+    HANDLE m_fenceEvent = nullptr;
 
-    // 三角形描画
+    // Vertex / Index
     struct Vertex
     {
         DirectX::XMFLOAT3 pos;
@@ -70,11 +72,11 @@ private:
     ComPtr<ID3D12Resource> m_indexBuffer;
     D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView{};
     D3D12_INDEX_BUFFER_VIEW m_indexBufferView{};
-    UINT m_indexCount{};
+    UINT m_indexCount = 0;
 
+    // Shaders / PSO / RootSig
     ComPtr<ID3DBlob> m_vsBlob;
     ComPtr<ID3DBlob> m_psBlob;
-
     ComPtr<ID3D12RootSignature> m_rootSignature;
     ComPtr<ID3D12PipelineState> m_pipelineState;
 };

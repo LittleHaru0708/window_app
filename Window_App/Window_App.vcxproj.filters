@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{42df4bc6-cff8-481f-8fc1-670a955664b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Window.cpp">
@@ -32,5 +35,13 @@
     <ClInclude Include="DX12App.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
