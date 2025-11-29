@@ -323,7 +323,7 @@ void DX12App::Render()
         m_rtvHeap->GetCPUDescriptorHandleForHeapStart();
     rtv.ptr += backIndex * m_rtvDescriptorSize;
 
-    const float clearColor[] = { 0.1f, 0.12f, 0.3f, 1.0f };
+    const float clearColor[] = { 1.0f, 0.0f, 0.0f, 1.0f };//ここの数値をいじれば色が変えられる背景の１が最大
     m_commandList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
 
     // ★Viewport / Scissor 修正版（完全代入方式）
